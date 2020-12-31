@@ -25,11 +25,11 @@ fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 # It is important you include the type of file in the name of the video eg. .mp4
 
 def RunMain(FillInName):
-    videoPath = "../GitHubUpload/InputVideos/{}.mp4".format(FillInName)
+    videoPath = "../WhiskSight/InputVideos/{}.mp4".format(FillInName)
     
     
     #Output folder name
-    OutputFolder="../GitHubUpload/Output/"
+    OutputFolder="../WhiskSight/Output/"
     if not os.path.exists(OutputFolder):
         os.mkdir(OutputFolder)
         print("Directory " , OutputFolder ,  " Created ")
