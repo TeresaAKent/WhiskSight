@@ -5,8 +5,6 @@ Created on Fri May  8 11:00:43 2020
 @author: tkent
 """
 
-import sys
-from random import randint
 import numpy as np
 import cv2
 
@@ -14,37 +12,38 @@ def ArrowVisualization(Video1OutputName,fourcc,framesPerSecond,ArrowMultiplier,p
     numberOfBoxes=params['numberOfBoxes']
     FinalData=params['FinalData']
     FramesToVideo=params['FramesToVideo']
-    InitalXCenters=params['InitialXCenters']
-    InitalYCenters=params['InitialYCenters']
-    Wbboxes=params['WhiskerLocations']
+
+    
+    video=cv2.VideoWriter(Video1OutputName,fourcc,framesPerSecond,(np.size(FramesToVideo,1),np.size(FramesToVideo,0)))
+    InitalPositions=(FinalData[10,:]).flatten()
+    for j in range(0,np.size(FramesToVideo,3)-1):
+        ArrowFrame=FramesToVideo[:,:,:,j].copy()
+        ArrowFrame=np.ascontiguousarray(ArrowFrame, dtype=np.uint8)
+        if j==0:
+            video.write(np.uint8(ArrowFrame))
+        else:
+            for k in range(numberOfBoxes):
+                XCenter=int(FinalData[j,k*2+1])
+                YCenter=int(FinalData[j,k*2+2])
+                ArrowX=XCenter+ArrowMultiplier*int(XCenter-InitalPositions[k*2+1])
+                ArrowY=YCenter+ArrowMultiplier*int(YCenter-InitalPositions[k*2+2])
+                cv2.arrowedLine(ArrowFrame,(XCenter,YCenter),(ArrowX,ArrowY),(255,255,255),5,tipLength=.4)
+            # cv2.imshow( "Display window", img);
+            # cv2.waitKey(0)
+            video.write(np.uint8(ArrowFrame))
+            
+        if j%50==0:
+            print(j/np.size(FramesToVideo,3))
+            
+    
+    video.release()
+    cv2.destroyAllWindows()
+def AlgorithmVisualization(Video1OutputName,fourcc,framesPerSecond,params):
+    FinalData=params['FinalData']
+    FramesToVideo=params['FramesToVideo']
     ClosestDots=params['ClosestDots'].astype(int)
     WhiskerIndexes=params['WhiskerIndexes'].astype(int)
 
-    
-    # video=cv2.VideoWriter(Video1OutputName,fourcc,framesPerSecond,(np.size(FramesToVideo,1),np.size(FramesToVideo,0)))
-    # InitalPositions=(FinalData[10,:]).flatten()
-    # for j in range(0,np.size(FramesToVideo,3)-1):
-    #     ArrowFrame=FramesToVideo[:,:,:,j].copy()
-    #     ArrowFrame=np.ascontiguousarray(ArrowFrame, dtype=np.uint8)
-    #     if j==0:
-    #         video.write(np.uint8(ArrowFrame))
-    #     else:
-    #         for k in range(numberOfBoxes):
-    #             XCenter=int(FinalData[j,k*2+1])
-    #             YCenter=int(FinalData[j,k*2+2])
-    #             ArrowX=XCenter+ArrowMultiplier*int(XCenter-InitalPositions[k*2+1])
-    #             ArrowY=YCenter+ArrowMultiplier*int(YCenter-InitalPositions[k*2+2])
-    #             cv2.arrowedLine(ArrowFrame,(XCenter,YCenter),(ArrowX,ArrowY),(255,255,255),5,tipLength=.4)
-    #         # cv2.imshow( "Display window", img);
-    #         # cv2.waitKey(0)
-    #         video.write(np.uint8(ArrowFrame))
-            
-    #     if j%50==0:
-    #         print(j/np.size(FramesToVideo,3))
-            
-    
-    # video.release()
-    # cv2.destroyAllWindows()
     video=cv2.VideoWriter(Video1OutputName+"identification.mp4",fourcc,framesPerSecond,(np.size(FramesToVideo,1),np.size(FramesToVideo,0)))
     InitalPositions=FinalData[10,:]
     # Movement is a jxnumDots Array
@@ -98,7 +97,7 @@ def ArrowVisualization(Video1OutputName,fourcc,framesPerSecond,ArrowMultiplier,p
                 # put a blue box around it if its airflow
                 #print('WhiskerNum',l,numClose,Stdv)
                 
-                if SignChangeCount>10 and numClose>10 and np.linalg.norm(WhiskerMovement2)>3 and np.linalg.norm(WhiskerMovement2)>=3*np.linalg.norm([XaverageMovement,YaverageMovement]):
+                if SignChangeCount>10 and numClose>15 and np.linalg.norm(WhiskerMovement2)>3 and np.linalg.norm(WhiskerMovement2)>=3*np.linalg.norm([XaverageMovement,YaverageMovement]):
                     xCenter=FinalData[j,WhiskerIndexes[l]*2+1]
                     yCenter=FinalData[j,WhiskerIndexes[l]*2+2]
                     cv2.rectangle(ArrowFrame2,(int(xCenter-50),int(yCenter-50)), (int(xCenter+50),int(yCenter+50)),(128,50,0),3)

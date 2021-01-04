@@ -19,7 +19,6 @@ from TrackerwIdentification import RunTracker
 ArrowMultiplier=10
 
 
-
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 # Set video to load
 # It is important you include the type of file in the name of the video eg. .mp4
@@ -52,12 +51,12 @@ def RunMain(FillInName):
     
     
     # OutputVideo_ is a true false value where 1 will output a video and 0 will not output a video
-    # Output 1 is the video with the arrows on it
+    # Output 1 is the video with the algorithm on it
     # I highly caution against having this code always outputing videos and never deleting them
     # It will take up space on your hardrive fast
     OutputVideo1=1
 
-    Video1OutputName="{}{}ArrowVideo.mp4".format(OutputFolder,OutputfileName)
+    Video1OutputName="{}{}AlgorithmVideo.mp4".format(OutputFolder,OutputfileName)
 
     
     params={}
@@ -75,7 +74,7 @@ def RunMain(FillInName):
     framesPerSecond=params['framesPerSecond']
     
     if OutputVideo1==1:
-        ArrowVisualization(Video1OutputName,fourcc,framesPerSecond,ArrowMultiplier,params)
+        AlgorithmVisualization(Video1OutputName,fourcc,framesPerSecond,params)
         
 # FillInName="MultiStimuli"
 # RunMain(FillInName)

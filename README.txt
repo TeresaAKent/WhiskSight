@@ -6,7 +6,7 @@ This code was uploaded as part of a ICRA 2021 submission. The code takes in a vi
 -A video of an algorithm which predicts the stimuli (contact, inertia, airflow) applied to the WhiskSight.
 
 Any questions about this code can be directed to tkent@andrew.cmu.edu.  
-If anyone would like a copy of a video from the WhiskSight sensor to play with the code or the parameters, the authors are happy to oblige a request by email.
+If anyone would like a copy of a video from the WhiskSight sensor to play with the code or the parameters, the authors are happy to oblige a request by email. Common locations for modification can be found in the last section of this document.
 -------------------------------------------------------------------------
 To run this code you will need to download the following codes: 
 
@@ -34,7 +34,7 @@ ArrowVisualization: Adds Arrows to the tracked dots which demonstrate their move
 AlgorithmVisualization: Demonstrates the algorithms ability to predict the cause of deflections to the membrane and the whisker
 TrackerVerification: Places numbered boxes around each of the tracked points for verification the tracker is working well.  The numbers are the same as those output in the excel file.
 ----------------------------------------------------------------------------------------------------------------------------------------
-Modifications Located in the TrackerwIdentification code:
+Modifications Located in the TrackerwIdentification.py:
 
 If you create a system which might need different thresholds for identification, at line 271-280 uncomment the plt commands.
 The Hue, Saturation, and Value channel of each image will plot in order to help determine the best thresholds.
@@ -46,5 +46,24 @@ Line 432 in the code: If you uncomment this line the first frame of the video wi
 On this frame you can draw boxes around the dots you do not want tracked and then press space twice to have them removed.
 This can speed up the code or remove whiskers if you are only interested in a few.
 
-
 Line 412: Change which of the OpenCV trackers is being used
+
+
+
+Modifications Located in the VideoOutputs.py:
+
+Line 100: Conditions for the algorithm to guess Airflow on a single whisker
+Line 117: Conditions for the algorithm to guess Inertia on a single whisker
+Line 113: Conditions for the algorithm to guess Contact on a single whisker
+Line 128: Conditions for the algorithm to designate Airflow is occuring to the array
+Line 143: Conditions for the algorithm to designate Inertia is occuring to the array
+
+
+Modifications Located in Main.py:
+Line 27: Input Video folder location
+Line 31: Deisred folder name for code outputs
+Line 40: If you desire to test smallchanges on the same video, you can change the integer on line 40 to keep the files seperate.
+Line 79+: Change the name of the video file here, multiple video files can be run from this location
+
+
+
