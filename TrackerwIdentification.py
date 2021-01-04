@@ -409,7 +409,7 @@ def InitalizationForAll(params, videoPath, HelperImageFileName, buffer):
     # Run the remove the boxes code
     
     # Specify the tracker type, Medianflow,Mosse, csrt
-    trackerType = "MOSSE"
+    trackerType = "CSRT"
     
     # Create MultiTracker object
     multiTracker = cv2.MultiTracker_create()
